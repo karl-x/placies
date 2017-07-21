@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "bcrypt": "^1.0.2",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
@@ -21,5 +22,16 @@
     "globals": [
       "$"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/karl-x/placies.git"
+  },
+  "keywords": [],
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/karl-x/placies/issues"
+  },
+  "homepage": "https://github.com/karl-x/placies#readme",
+  "description": ""
 }
