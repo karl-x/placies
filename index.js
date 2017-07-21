@@ -5,6 +5,8 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 const express = require('express')
 const exphbs = require('express-handlebars')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 const bodyParser = require('body-parser')
 
 // Using credit card and local db
@@ -39,6 +41,14 @@ app.use(bodyParser.json())
 
 // listen to form data submission
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  store: new MongoStore({
+    url: process.env.MONGODB_URI
+  })
+}))
 
 // setup all files that the proj needs to require
 const placesRoute = require('./routes/placeRoute')

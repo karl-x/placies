@@ -11,7 +11,7 @@ $(function () {
   const apiUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
 
   // Method 1 can't be read by localhost, workaround is Method 2 or 3. Cons of 2: api can be viewed by public
-  const apiKey = `&key=${process.env.GOOGLE_PLACE_KEY}` // Method 1
+  const apiKey = `&key=${pGOOGLE_PLACE_KEY}` // Method 1
   // const apiKey = '&key=AIzaSyCxNyn5I2Me-fv147nnW5uqrRmhVrabebI' // Method 2
   // set up app.locals index.js file // Method 3
 
