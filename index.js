@@ -7,13 +7,14 @@ const express = require('express')
 const exphbs = require('express-handlebars')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
+const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 
-// Using credit card and local db
+// heroku addon way
 const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/placies'
 
-// // if you dont want to give credit card details and local db:
-// const url2 = 'mongodb://<dbuser>:<dbpassword>@ds041851.mlab.com:41851/placies' || 'mongodb://localhost:27017/placies'
+// self adding
+// const url = process.env.MLAB_URI || 'mongodb://localhost:27017/placies'
 
 mongoose.Promise = global.Promise
 mongoose.connect(url, {
@@ -36,11 +37,9 @@ app.engine('handlebars', exphbs({
   defaultLayout: 'main'
 }))
 app.set('view engine', 'handlebars')
-// listen to ajax request - json post
 app.use(bodyParser.json())
-
-// listen to form data submission
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(flash())
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -54,7 +53,8 @@ app.use(session({
 const placesRoute = require('./routes/placeRoute')
 const usersRoute = require('./routes/userRoute')
 
-// set up local
+// setup app.locals variables
+
 app.locals = {
   GOOGLE_PLACE_KEY: process.env.GOOGLE_PLACE_KEY
 }
@@ -63,6 +63,7 @@ app.locals = {
 // NO REQUIRING AFTER THIS LINE
 // public paths
 app.get('/', function (req, res) {
+  req.flash('message', 'from the bottle')
   res.render('home')
 })
 

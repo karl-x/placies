@@ -1,27 +1,27 @@
 const User = require('../models/User')
 const Place = require('../models/Place')
-
 const request = require('request')
-const bcrypt = require('bcrypt')
 
 // function placeSearch(url, callback) {
 //   request(`${apiUrl}${qString}${apiKey}`, callback)
 // }
 
 function register (req, res) {
-// //  getting all places from my list of places in the db
+  // getting all places from my list of places in the db
   Place.find({}, function (err, allPlaces) {
     if (err) res.send(err)
 
     res.render('users/new', {
-      places: allPlaces
+      places: allPlaces,
+      flash: req.flash('errors')
     })
   })
 
-//   // getting all places from google place api
+  // getting all places from google place api
 //   const apiUrl = 'https://maps.googleapis.com/maps/api/place/textsearch/json?'
 //   const apiKey = `&key=${process.env.GOOGLE_PLACE_KEY}`
 //   const qString = `query=hotels in new york`
+//
 //
 //   request(`${apiUrl}${qString}${apiKey}`, function (err, response, body) {
 //     if (err) res.send(err)
@@ -41,16 +41,25 @@ function create (req, res, next) {
     password: req.body.user.password
   })
 
-  newUser.places.push(req.body.place.id)
+  var savedSearch = req.body.place.id
+
+  newUser.places.push(savedSearch)
+
   newUser.save(function (err, createdUser) {
-    if (err) next(err)
+    if (err) {
+      // return res.send(err)
+      req.flash('errors', err.message)
+      return res.redirect('/users/new')
+
+      // next(err)
+    }
+
     res.send({
       reqbody: req.body,
       newUser: newUser,
       createdUser: createdUser
     })
   })
-
 
   // User.create(req.body.user, function (err, newUser) {
   //   if (err) {
